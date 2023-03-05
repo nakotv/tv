@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head  prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+    <meta charset="utf-8">
+    
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="robots" content="index,follow">
+    <meta content="pl" name="language"/>
+    
+
+
+    <link rel="Shortcut Icon" href="https://lookcam.pl/static/9dc2518/favicon/favicon.ico" type="image/x-icon"/>
+    <link rel="manifest" href="https://lookcam.pl/static/9dc2518/favicon/manifest.json">
+    <link rel="preconnect" href="https://lookcam.pl/lookcam-assets-production.wmscdn.com">
+    <link rel="stylesheet" href="https://lookcam.pl/static/9dc2518/css/output.a5a1a10b80c3.css" type="text/css">
+    
+
+
+                <div class="player">
+                    <video width="50%" id="player"  preload="none"></video>
+                </div>
+       
+
+<script src="/jquery.js"></script>
+
+<script src="/output.js"></script>
+
+<script src="/player.js"></script>
+
+<script src="/fuckadblock.js"></script>
+
+
+<script>
+    async function initPlayer() {
+        const res = await fetch('https://api.wolfstream.app/v1/assets/?id=iJwjLrdSZd');
+        const json = await res.json();
+        const hls_object = json[0]['secure_url'];
+        const video = document.querySelector('#player');
+
+        if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = hls_object;
+
+        } else if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource(hls_object);
+            hls.attachMedia(video);
+        }
+
+        const plyr = new Plyr("#player", {
+            autoplay: false,
+            ads: {
+                enabled: true,
+                tagUrl: 'https://myao.adocean.pl/ad.xml?id=QIGhr_xvzMTEDqJQuOLOD_4JPgPhxrrRE1gI.1PO6I..37/aocodetype=2'
+            },
+            controls: ['play-large', 'play', 'mute', 'volume', 'pip', 'airplay', 'fullscreen']
+        })
+    }
+
+    function showInfoText(text) {
+        $('.info-text').text(text);
+        $('.player').hide();
+    }
+
+    
+    $(document).ready(function () {
+        if (window.canRunAds !== undefined) {
+            initPlayer();
+        } else {
+            showInfoText("Aby korzystaæ z naszego odtwarzacza wy³¹cz Adblocka i za³aduj stronê ponownie.");
+        }
+    });
+    
+</script>
+</html>
